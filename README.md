@@ -105,3 +105,55 @@
 ### < Constraints >
 
 - 예외가 발생했을 경우, 예외 메시지를 출력시킨다.
+
+---
+
+## 시퀀스 다이어그램
+
+```mermaid
+sequenceDiagram
+    actor A as Actor
+    participant IO as IOHandler
+    participant app as App
+    participant C as Calculator
+    app ->> IO: 덧셈 문자열 입력 요청
+    activate app
+    IO ->> A: 입력 요청 메세지 출력
+    activate IO
+    A ->> IO: 덧셈 문자열 입력
+    opt 빈 문자열 또는 null 입력
+        IO -->> A: "빈 문자열은 입력할 수 없습니다."
+    end
+    opt 구분자와 숫자 외 문자 포함
+        IO -->> A: "구분자와 숫자 외 문자는 입력할 수 없습니다."
+    end
+    opt 커스텀 구분자가 공백문자 or 제어문자
+        IO -->> A: "커스텀 구분자는 공백문자 또는 제어문자를 사용할 수 없습니다."
+    end
+    opt 커스텀 구분자가 숫자
+        IO -->> A: "커스텀 구분자는 숫자를 사용할 수 없습니다."
+    end
+    opt 커스텀 구분자가 2자 이상
+        IO -->> A: "커스텀 구분자는 1자만 사용할 수 있습니다."
+    end
+    IO ->> app: 구분 숫자 반환 (List<Long>)
+    deactivate IO
+    app ->> C: 덧셈 계산 요청 (List<Long>)
+    activate C
+    opt 숫자가 양수가 아닐 경우
+        C -->> A: "숫자는 양수만 사용할 수 있습니다."
+    end
+    opt 각 숫자의 자리수가 9자리를 초과하는 경우
+        C -->> A: "각 숫자는 최대 9자리까지 가능합니다."
+    end
+    opt 숫자의 개수가 30개를 초과하는 경우
+        C -->> A: "숫자는 최대 30개까지만 사용할 수 있습니다."
+    end
+    C -->> app: 계산 결과 반환 (Long result)
+    deactivate C
+    app -->> IO: 계산 결과 출력 요청 (Long result)
+    activate IO
+    deactivate app
+    IO -->> A: 계산 결과 출력
+    deactivate IO
+```
