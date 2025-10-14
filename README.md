@@ -157,3 +157,67 @@ sequenceDiagram
     IO -->> A: 계산 결과 출력
     deactivate IO
 ```
+
+---
+
+## 클래스 다이어그램
+
+```mermaid
+classDiagram
+    class Calculator {
+        + add(List&lt;Long> numbers): Long
+    }
+
+    class Separator {
+        + split(input, delimiters): List&lt;String>
+    }
+
+    class DelimiterProcessor {
+        - Set&lt;String> DEFAULT_DELIMITERS
+        + hasCustomDelimiter(String input): boolean
+        + extractDelimiters(String input): Set&lt;String>
+        + removeCustomPrefix(String input): String
+    }
+
+    class Converter {
+        + convert(List&lt;String> numbers): List&lt;Long>
+    }
+
+    class InputHandler {
+        - Separator separator
+        - DelimiterProcessor delimiterProcessor
+        - Converter converter
+        + read(): List&lt;Long>
+    }
+
+    class OutputHandler {
+        + printRequestMessage()
+        + printResult(Long result)
+        + printError(String errorMessage)
+    }
+
+    class IOHandler {
+        - InputHandler inputHandler
+        - OutputHandler outputHandler
+        + requestNumbers(): List&lt;Long>
+        + printResult(Long result)
+        + printError(String message)
+    }
+
+    class App {
+        - IOHandler ioHandler
+        - Calculator calculator
+        + run()
+    }
+
+    IOHandler --> InputHandler
+    InputHandler --> Separator
+    InputHandler --> DelimiterProcessor
+    InputHandler --> Converter
+    IOHandler --> OutputHandler
+    App --> IOHandler
+    App --> Calculator
+
+```
+
+
