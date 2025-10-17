@@ -140,6 +140,9 @@ sequenceDiagram
     deactivate IO
     app ->> C: 덧셈 계산 요청 (List<Long>)
     activate C
+    opt 숫자가 존재하지 않는 경우
+        C -->> A: "계산할 숫자가 존재하지 않습니다."
+    end
     opt 숫자가 양수가 아닐 경우
         C -->> A: "숫자는 양수만 사용할 수 있습니다."
     end
