@@ -15,4 +15,8 @@ public class IOHandler {
         outputHandler.printRequestMessage();
         return inputHandler.read();
     }
+
+    public void printResult(Long result) {
+        outputHandler.printResult(result);
+    }
 }

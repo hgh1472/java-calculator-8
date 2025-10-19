@@ -43,13 +43,13 @@ class DelimiterProcessorTest {
         }
 
         @Test
-        @DisplayName("커스텀 구분자는 단일 문자이기에, \"//\"와 \"\\n\" 사이에 2글자 이상이 위치할 경우, 커스텀 구분자를 가진다고 판단하지 않는다.")
+        @DisplayName("커스텀 문자는 //와 \"\\n\" 사이에 위치한다.")
         void returnFalse_whenCustomDelimiterIsMoreThanOneCharacter() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
             boolean hasCustomDelimiter = delimiterProcessor.hasCustomDelimiter("//;;\\n1;;2;;3");
 
-            assertThat(hasCustomDelimiter).isFalse();
+            assertThat(hasCustomDelimiter).isTrue();
         }
     }
 

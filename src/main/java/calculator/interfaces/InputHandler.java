@@ -14,14 +14,18 @@ public class InputHandler {
     }
 
     public List<Long> read() {
-        String input = Console.readLine();
-        if (input == null || input.isEmpty()) {
-            throw new IllegalArgumentException("[ERROR] 빈 문자열은 입력할 수 없습니다.");
+        try {
+            String input = Console.readLine();
+            if (input == null || input.isEmpty()) {
+                throw new IllegalArgumentException("[ERROR] 빈 문자열은 입력할 수 없습니다.");
+            }
+            Set<String> delimiters = delimiterProcessor.extractDelimiters(input);
+            if (delimiterProcessor.hasCustomDelimiter(input)) {
+                input = delimiterProcessor.removeCustomPrefix(input);
+            }
+            return separator.separate(input, delimiters);
+        } finally {
+            Console.close();
         }
-        Set<String> delimiters = delimiterProcessor.extractDelimiters(input);
-        if (delimiterProcessor.hasCustomDelimiter(input)) {
-            input = delimiterProcessor.removeCustomPrefix(input);
-        }
-        return separator.separate(input, delimiters);
     }
 }

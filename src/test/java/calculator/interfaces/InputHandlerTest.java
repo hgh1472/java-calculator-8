@@ -2,12 +2,12 @@ package calculator.interfaces;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.io.ByteArrayInputStream;
+import calculator.ConsoleSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class InputHandlerTest {
+class InputHandlerTest extends ConsoleSupport {
     private InputHandler inputHandler;
 
     @BeforeEach
@@ -18,8 +18,7 @@ class InputHandlerTest {
     @Test
     @DisplayName("입력값이 빈 문자열일 경우, IllegalArgumentException을 발생시킨다.")
     void throwIllegalArgumentException_whenInputIsEmpty() {
-        ByteArrayInputStream in = new ByteArrayInputStream("\n".getBytes());
-        System.setIn(in);
+        setInput("\n");
 
         assertThatThrownBy(() -> inputHandler.read())
                 .isInstanceOf(IllegalArgumentException.class)
