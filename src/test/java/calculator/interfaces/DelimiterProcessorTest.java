@@ -52,4 +52,78 @@ class DelimiterProcessorTest {
             assertThat(hasCustomDelimiter).isFalse();
         }
     }
+
+    @Nested
+    @DisplayName("커스텀 구분자 추출 시,")
+    class ExtractCustomDelimiters {
+        @Test
+        @DisplayName("입력값이 null일 때 IllegalArgumentException 예외가 발생한다.")
+        void throwIllegalArgumentException_whenInputIsNull() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters(null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("[ERROR] 입력 값이 비어 있습니다.");
+        }
+
+        @Test
+        @DisplayName("커스텀 구분자가 없을 경우, 기본 구분자 집합을 반환한다.")
+        void returnDefaultDelimiters_whenNoCustomDelimiter() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            var delimiters = delimiterProcessor.extractCustomDelimiters("1,2:3");
+
+            assertThat(delimiters).containsExactlyInAnyOrder(",", ":");
+        }
+
+        @Test
+        @DisplayName("커스텀 구분자가 있을 경우, 기본 구분자와 커스텀 구분자를 포함한 집합을 반환한다.")
+        void returnDelimitersIncludingCustomDelimiter_whenCustomDelimiterExists() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            var delimiters = delimiterProcessor.extractCustomDelimiters("//;\\n1;2;3");
+
+            assertThat(delimiters).containsExactlyInAnyOrder(",", ":", ";");
+        }
+
+        @Test
+        @DisplayName("커스텀 구분자가 단일 문자가 아닐 경우, IllegalArgumentException 예외가 발생한다.")
+        void throwIllegalArgumentException_whenCustomDelimiterIsNotSingleCharacter() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters("//;;\\n1;;2;;3"))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("[ERROR] 커스텀 구분자는 단일 문자여야 합니다.");
+        }
+
+        @Test
+        @DisplayName("커스텀 구분자가 공백 문자일 경우, IllegalArgumentException 예외가 발생한다.")
+        void throwIllegalArgumentException_whenCustomDelimiterIsWhitespace() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters("// \\n1 2 3"))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("[ERROR] 커스텀 구분자는 제어 문자 또는 공백 문자가 될 수 없습니다.");
+        }
+
+        @Test
+        @DisplayName("커스텀 구분자가 제어 문자일 경우, IllegalArgumentException 예외가 발생한다.")
+        void throwIllegalArgumentException_whenCustomDelimiterIsControlCharacter() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters("//\n\\n1\n2\n3"))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("[ERROR] 커스텀 구분자는 제어 문자 또는 공백 문자가 될 수 없습니다.");
+        }
+
+        @Test
+        @DisplayName("커스텀 구분자가 숫자일 경우, IllegalArgumentException 예외가 발생한다.")
+        void throwIllegalArgumentException_whenCustomDelimiterIsDigit() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters("//1\\n11213"))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("[ERROR] 커스텀 구분자는 숫자가 될 수 없습니다.");
+        }
+    }
 }
