@@ -39,7 +39,19 @@ public class DelimiterProcessor {
         return delimiters;
     }
 
-    private static void validateCustomDelimiter(String customDelimiter) {
+    public String removeCustomPrefix(String input) {
+        if (input == null) {
+            throw new IllegalArgumentException("[ERROR] 입력 값이 비어 있습니다.");
+        }
+        if (!hasCustomDelimiter(input)) {
+            return input;
+        }
+
+        int endIndex = input.indexOf("\\n") + 2;
+        return input.substring(endIndex);
+    }
+
+    private void validateCustomDelimiter(String customDelimiter) {
         if (customDelimiter.length() != 1) {
             throw new IllegalArgumentException("[ERROR] 커스텀 구분자는 단일 문자여야 합니다.");
         }

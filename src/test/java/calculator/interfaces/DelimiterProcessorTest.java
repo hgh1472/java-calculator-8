@@ -126,4 +126,38 @@ class DelimiterProcessorTest {
                     .hasMessage("[ERROR] 커스텀 구분자는 숫자가 될 수 없습니다.");
         }
     }
+
+    @Nested
+    @DisplayName("커스텀 구분자 접두사 제거 시,")
+    class RemoveCustomPrefix {
+        @Test
+        @DisplayName("입력값이 null일 때 IllegalArgumentException 예외가 발생한다.")
+        void throwIllegalArgumentException_whenInputIsNull() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            assertThatThrownBy(() -> delimiterProcessor.removeCustomPrefix(null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("[ERROR] 입력 값이 비어 있습니다.");
+        }
+
+        @Test
+        @DisplayName("커스텀 구분자가 없을 경우, 입력값을 그대로 반환한다.")
+        void returnInputAsIs_whenNoCustomDelimiter() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            String result = delimiterProcessor.removeCustomPrefix("1,2:3");
+
+            assertThat(result).isEqualTo("1,2:3");
+        }
+
+        @Test
+        @DisplayName("커스텀 구분자가 있을 경우, 커스텀 구분자 접두사를 제거한 값을 반환한다.")
+        void returnInputWithoutCustomPrefix_whenCustomDelimiterExists() {
+            DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
+
+            String result = delimiterProcessor.removeCustomPrefix("//;\\n1;2;3");
+
+            assertThat(result).isEqualTo("1;2;3");
+        }
+    }
 }
