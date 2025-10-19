@@ -20,7 +20,7 @@ public class Calculator {
 
     private static void validateNumbers(List<Long> numbers) {
         if (numbers == null || numbers.isEmpty()) {
-            throw new RuntimeException("[ERROR] 계산할 숫자가 존재하지 않습니다.");
+            throw new IllegalArgumentException("[ERROR] 계산할 숫자가 존재하지 않습니다.");
         }
         if (numbers.size() > MAX_NUMBER_COUNT_LIMIT) {
             throw new IllegalArgumentException("[ERROR] 숫자는 최대 30개까지만 사용할 수 있습니다.");
