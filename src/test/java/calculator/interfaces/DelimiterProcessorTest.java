@@ -61,7 +61,7 @@ class DelimiterProcessorTest {
         void throwIllegalArgumentException_whenInputIsNull() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters(null))
+            assertThatThrownBy(() -> delimiterProcessor.extractDelimiters(null))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("[ERROR] 입력 값이 비어 있습니다.");
         }
@@ -71,7 +71,7 @@ class DelimiterProcessorTest {
         void returnDefaultDelimiters_whenNoCustomDelimiter() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            var delimiters = delimiterProcessor.extractCustomDelimiters("1,2:3");
+            var delimiters = delimiterProcessor.extractDelimiters("1,2:3");
 
             assertThat(delimiters).containsExactlyInAnyOrder(",", ":");
         }
@@ -81,7 +81,7 @@ class DelimiterProcessorTest {
         void returnDelimitersIncludingCustomDelimiter_whenCustomDelimiterExists() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            var delimiters = delimiterProcessor.extractCustomDelimiters("//;\\n1;2;3");
+            var delimiters = delimiterProcessor.extractDelimiters("//;\\n1;2;3");
 
             assertThat(delimiters).containsExactlyInAnyOrder(",", ":", ";");
         }
@@ -91,7 +91,7 @@ class DelimiterProcessorTest {
         void throwIllegalArgumentException_whenCustomDelimiterIsNotSingleCharacter() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters("//;;\\n1;;2;;3"))
+            assertThatThrownBy(() -> delimiterProcessor.extractDelimiters("//;;\\n1;;2;;3"))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("[ERROR] 커스텀 구분자는 단일 문자여야 합니다.");
         }
@@ -101,7 +101,7 @@ class DelimiterProcessorTest {
         void throwIllegalArgumentException_whenCustomDelimiterIsWhitespace() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters("// \\n1 2 3"))
+            assertThatThrownBy(() -> delimiterProcessor.extractDelimiters("// \\n1 2 3"))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("[ERROR] 커스텀 구분자는 제어 문자 또는 공백 문자가 될 수 없습니다.");
         }
@@ -111,7 +111,7 @@ class DelimiterProcessorTest {
         void throwIllegalArgumentException_whenCustomDelimiterIsControlCharacter() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters("//\n\\n1\n2\n3"))
+            assertThatThrownBy(() -> delimiterProcessor.extractDelimiters("//\n\\n1\n2\n3"))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("[ERROR] 커스텀 구분자는 제어 문자 또는 공백 문자가 될 수 없습니다.");
         }
@@ -121,7 +121,7 @@ class DelimiterProcessorTest {
         void throwIllegalArgumentException_whenCustomDelimiterIsDigit() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            assertThatThrownBy(() -> delimiterProcessor.extractCustomDelimiters("//1\\n11213"))
+            assertThatThrownBy(() -> delimiterProcessor.extractDelimiters("//1\\n11213"))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("[ERROR] 커스텀 구분자는 숫자가 될 수 없습니다.");
         }

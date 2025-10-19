@@ -19,7 +19,7 @@ public class DelimiterProcessor {
         return input.startsWith("//") && input.contains("\\n");
     }
 
-    public Set<String> extractCustomDelimiters(String input) {
+    public Set<String> extractDelimiters(String input) {
         if (input == null) {
             throw new IllegalArgumentException("[ERROR] 입력 값이 비어 있습니다.");
         }
