@@ -18,6 +18,7 @@
 - 숫자가 양수가 아닐 경우, `IllegalArgumentException`을 발생시킨다.
 - 각 숫자의 자리수가 9자리를 초과하는 경우, `IllegalArgumentException`을 발생시킨다.
 - 숫자의 개수가 30개를 초과하는 경우, `IllegalArgumentException`을 발생시킨다.
+- 숫자가 존재하지 않을 경우, `IllegalArgumentException`을 발생시킨다.
 
 > 문자열에서 구분자를 통해 숫자를 구분한다.
 
@@ -67,7 +68,7 @@
 
 - 커스텀 구분자가 공백문자 또는 제어문자 경우, `IllegalArgumentException`을 발생시킨다.
 - 커스텀 구분자가 숫자일 경우, `IllegalArgumentException`을 발생시킨다.
-- 커스텀 구분자가 2자 이상일 경우, `IllegalArgumentException`을 발생시킨다.
+- 커스텀 구분자가 단일 문자가 아닐 경우, `IllegalArgumentException`을 발생시킨다.
 
 > 커스텀 구분자를 나타내는 문자열을 제거한 문자열을 반환한다.
 
@@ -82,7 +83,36 @@
 
 ### < Fail Cases >
 
-> 사용자의 입력을 받아, 숫자 리스트를 반환한다.
+- 커스텀 구분자가 단일 문자가 아닐 경우, `IllegalArgumentException`을 발생시킨다.
+
+> 문자열 리스트를 숫자 리스트로 변환한다.
+
+### < Happy Cases >
+
+- 문자열 리스트를 숫자 리스트로 변환한다.
+
+### < Constraints >
+
+- 각 숫자는 최대 9자리 양수이다.
+- 빈 문자열은 무시한다.
+
+### < Fail Cases >
+
+- 각 숫자의 자리수가 9자리를 초과하는 경우, `IllegalArgumentException`을 발생시킨다.
+- 숫자가 양수가 아닐 경우, `IllegalArgumentException`을 발생시킨다.
+
+> 문자열로부터 구분자에 따라 문자열 리스트를 반환한다.
+
+### < Happy Cases >
+- 구분자에 따라 문자열 리스트를 반환한다.
+
+### < Constraints >
+- 구분된 한 문자열이 빈 문자열일 경우, 해당 문자열은 포함하지 않는다.
+
+### < Fail Cases >
+- 구분자가 null이거나 빈 문자열일 경우, `IllegalArgumentException`을 발생시킨다.
+
+> 사용자의 입력을 받는다.
 
 ### < Happy Cases >
 
@@ -104,7 +134,7 @@
 
 ### < Constraints >
 
-- 예외가 발생했을 경우, 예외 메시지를 출력시킨다.
+- 예외가 발생했을 경우, 예외를 그대로 반환한다.
 
 ---
 
@@ -175,14 +205,17 @@ classDiagram
     }
 
     class Separator {
-        + split(input, delimiters): List&lt;String>
+        + separate(input, delimiters): List&lt;String>
     }
 
     class DelimiterProcessor {
         - Set&lt;String> DEFAULT_DELIMITERS
+        - String CUSTOM_DELIMITER_PREFIX
+        - String CUSTOM_DELIMITER_SUFFIX
+        - int CUSTOM_DELIMITER_LENGTH
         + hasCustomDelimiter(String input): boolean
         + extractDelimiters(String input): Set&lt;String>
-        + removeCustomPrefix(String input): String
+        + removeCustomDelimiterString(String input): String
     }
 
     class Converter {
@@ -199,7 +232,6 @@ classDiagram
     class OutputHandler {
         + printRequestMessage()
         + printResult(Long result)
-        + printError(String errorMessage)
     }
 
     class IOHandler {
@@ -207,7 +239,6 @@ classDiagram
         - OutputHandler outputHandler
         + requestNumbers(): List&lt;Long>
         + printResult(Long result)
-        + printError(String message)
     }
 
     class App {
