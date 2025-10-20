@@ -23,7 +23,7 @@ public class InputHandler {
             }
             Set<String> delimiters = delimiterProcessor.extractDelimiters(input);
             if (delimiterProcessor.hasCustomDelimiter(input)) {
-                input = delimiterProcessor.removeCustomPrefix(input);
+                input = delimiterProcessor.removeCustomDelimiterString(input);
             }
             List<String> separated = separator.separate(input, delimiters);
             return converter.convert(separated);

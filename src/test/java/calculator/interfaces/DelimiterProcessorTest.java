@@ -135,7 +135,7 @@ class DelimiterProcessorTest {
         void throwIllegalArgumentException_whenInputIsNull() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            assertThatThrownBy(() -> delimiterProcessor.removeCustomPrefix(null))
+            assertThatThrownBy(() -> delimiterProcessor.removeCustomDelimiterString(null))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("[ERROR] 입력 값이 비어 있습니다.");
         }
@@ -145,7 +145,7 @@ class DelimiterProcessorTest {
         void returnInputAsIs_whenNoCustomDelimiter() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            String result = delimiterProcessor.removeCustomPrefix("1,2:3");
+            String result = delimiterProcessor.removeCustomDelimiterString("1,2:3");
 
             assertThat(result).isEqualTo("1,2:3");
         }
@@ -155,7 +155,7 @@ class DelimiterProcessorTest {
         void returnInputWithoutCustomPrefix_whenCustomDelimiterExists() {
             DelimiterProcessor delimiterProcessor = new DelimiterProcessor();
 
-            String result = delimiterProcessor.removeCustomPrefix("//;\\n1;2;3");
+            String result = delimiterProcessor.removeCustomDelimiterString("//;\\n1;2;3");
 
             assertThat(result).isEqualTo("1;2;3");
         }

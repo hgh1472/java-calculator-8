@@ -40,7 +40,7 @@ public class DelimiterProcessor {
         return delimiters;
     }
 
-    public String removeCustomPrefix(String input) {
+    public String removeCustomDelimiterString(String input) {
         if (input == null) {
             throw new IllegalArgumentException("[ERROR] 입력 값이 비어 있습니다.");
         }
