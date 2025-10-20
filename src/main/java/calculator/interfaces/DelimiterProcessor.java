@@ -4,19 +4,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DelimiterProcessor {
-
-    private static final int CUSTOM_DELIMITER_POSSIBLE_LENGTH = 4;
+    private static final String CUSTOM_DELIMITER_PREFIX = "//";
+    private static final String CUSTOM_DELIMITER_SUFFIX = "\\n";
+    private static final int CUSTOM_DELIMITER_LENGTH = 1;
     private static final Set<String> DEFAULT_DELIMITERS = Set.of(",", ":");
 
     public boolean hasCustomDelimiter(String input) {
         if (input == null) {
             throw new IllegalArgumentException("[ERROR] 입력 값이 비어 있습니다.");
         }
-        if (input.length() <= CUSTOM_DELIMITER_POSSIBLE_LENGTH) {
+        if (input.length() <= getCustomDelimiterRange()) {
             return false;
         }
 
-        return input.startsWith("//") && input.contains("\\n");
+        return input.startsWith(CUSTOM_DELIMITER_PREFIX) && input.contains(CUSTOM_DELIMITER_SUFFIX);
     }
 
     public Set<String> extractDelimiters(String input) {
@@ -27,8 +28,8 @@ public class DelimiterProcessor {
             return DEFAULT_DELIMITERS;
         }
 
-        int startIndex = 2;
-        int endIndex = input.indexOf("\\n");
+        int startIndex = CUSTOM_DELIMITER_PREFIX.length();
+        int endIndex = input.indexOf(CUSTOM_DELIMITER_SUFFIX);
         String customDelimiter = input.substring(startIndex, endIndex);
 
         validateCustomDelimiter(customDelimiter);
@@ -47,12 +48,19 @@ public class DelimiterProcessor {
             return input;
         }
 
-        int endIndex = input.indexOf("\\n") + 2;
-        return input.substring(endIndex);
+        int startIndex = input.indexOf(CUSTOM_DELIMITER_SUFFIX) + CUSTOM_DELIMITER_SUFFIX.length();
+        if (startIndex != getCustomDelimiterRange()) {
+            throw new IllegalArgumentException("[ERROR] 커스텀 구분자는 단일 문자여야 합니다.");
+        }
+        return input.substring(startIndex);
+    }
+
+    private static int getCustomDelimiterRange() {
+        return CUSTOM_DELIMITER_PREFIX.length() + CUSTOM_DELIMITER_LENGTH + CUSTOM_DELIMITER_SUFFIX.length();
     }
 
     private void validateCustomDelimiter(String customDelimiter) {
-        if (customDelimiter.length() != 1) {
+        if (customDelimiter.length() != CUSTOM_DELIMITER_LENGTH) {
             throw new IllegalArgumentException("[ERROR] 커스텀 구분자는 단일 문자여야 합니다.");
         }
         char delimiterChar = customDelimiter.charAt(0);
