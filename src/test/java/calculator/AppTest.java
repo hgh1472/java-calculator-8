@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import calculator.domain.Calculator;
+import calculator.interfaces.Converter;
 import calculator.interfaces.DelimiterProcessor;
 import calculator.interfaces.IOHandler;
 import calculator.interfaces.InputHandler;
@@ -19,7 +20,7 @@ class AppTest extends ConsoleSupport {
     private final App app =
             new App(new Calculator(),
                     new IOHandler(
-                            new InputHandler(new Separator(), new DelimiterProcessor()),
+                            new InputHandler(new Separator(), new DelimiterProcessor(), new Converter()),
                             new OutputHandler()
                     )
             );

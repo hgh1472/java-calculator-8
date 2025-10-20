@@ -35,33 +35,13 @@ class SeparatorTest {
     }
 
     @Test
-    @DisplayName("구분자와 숫자 외 문자가 포함된 경우, IllegalArgumentException 예외가 발생한다.")
-    void throwIllegalArgumentException_whenNotAllowed() {
-        Separator separator = new Separator();
-
-        assertThatThrownBy(() -> separator.separate("1,2,4A", Set.of(",")))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("[ERROR] 허용되지 않는 문자가 포함되어 있습니다.");
-    }
-
-    @Test
-    @DisplayName("숫자가 9자리를 초과하는 경우, IllegalArgumentException 예외가 발생한다.")
-    void throwIllegalArgumentException_whenExceedNineDigits() {
-        Separator separator = new Separator();
-
-        assertThatThrownBy(() -> separator.separate("1,2,123456789", Set.of(",")))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("[ERROR] 각 숫자는 최대 9자리까지 가능합니다.");
-    }
-
-    @Test
-    @DisplayName("여러 구분자를 사용하는 경우, 각 구분자를 인식하여 숫자를 분리한다.")
+    @DisplayName("여러 구분자를 사용하는 경우, 각 구분자를 인식하여 분리한다.")
     void separateWithMultipleDelimiters() {
         Separator separator = new Separator();
 
-        List<Long> result = separator.separate("1;2,3|4", Set.of(",", ";", "|"));
+        List<String> result = separator.separate("1;2,3|4", Set.of(",", ";", "|"));
 
-        assertThat(result).containsExactly(1L, 2L, 3L, 4L);
+        assertThat(result).containsExactly("1", "2", "3", "4");
     }
 
     @Test
@@ -69,7 +49,7 @@ class SeparatorTest {
     void returnEmptyList_whenOnlyDelimiters() {
         Separator separator = new Separator();
 
-        List<Long> result = separator.separate(",,,;;;", Set.of(",", ";"));
+        List<String> result = separator.separate(",,,;;;", Set.of(",", ";"));
 
         assertThat(result).isEmpty();
     }

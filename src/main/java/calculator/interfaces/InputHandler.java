@@ -7,10 +7,12 @@ import java.util.Set;
 public class InputHandler {
     private final Separator separator;
     private final DelimiterProcessor delimiterProcessor;
+    private final Converter converter;
 
-    public InputHandler(Separator separator, DelimiterProcessor delimiterProcessor) {
+    public InputHandler(Separator separator, DelimiterProcessor delimiterProcessor, Converter converter) {
         this.separator = separator;
         this.delimiterProcessor = delimiterProcessor;
+        this.converter = converter;
     }
 
     public List<Long> read() {
@@ -23,7 +25,8 @@ public class InputHandler {
             if (delimiterProcessor.hasCustomDelimiter(input)) {
                 input = delimiterProcessor.removeCustomPrefix(input);
             }
-            return separator.separate(input, delimiters);
+            List<String> separated = separator.separate(input, delimiters);
+            return converter.convert(separated);
         } finally {
             Console.close();
         }

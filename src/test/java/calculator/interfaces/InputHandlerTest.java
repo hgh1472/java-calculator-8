@@ -12,7 +12,7 @@ class InputHandlerTest extends ConsoleSupport {
 
     @BeforeEach
     void setUp() {
-        inputHandler = new InputHandler(new Separator(), new DelimiterProcessor());
+        inputHandler = new InputHandler(new Separator(), new DelimiterProcessor(), new Converter());
     }
 
     @Test
