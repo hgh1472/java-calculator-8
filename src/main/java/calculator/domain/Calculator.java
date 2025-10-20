@@ -1,10 +1,11 @@
 package calculator.domain;
 
+import static calculator.domain.NumberConstraints.MAX_NUMBER_COUNT;
+import static calculator.domain.NumberConstraints.MAX_VALUE;
+
 import java.util.List;
 
 public class Calculator {
-    private static final int MAX_NUMBER_COUNT_LIMIT = 30;
-    private static final int MAX_NUMBER_LIMIT = 100000000;
 
     public Long add(List<Long> numbers) {
         validateNumbers(numbers);
@@ -22,7 +23,7 @@ public class Calculator {
         if (numbers == null || numbers.isEmpty()) {
             throw new IllegalArgumentException("[ERROR] 계산할 숫자가 존재하지 않습니다.");
         }
-        if (numbers.size() > MAX_NUMBER_COUNT_LIMIT) {
+        if (numbers.size() > MAX_NUMBER_COUNT.getValue()) {
             throw new IllegalArgumentException("[ERROR] 숫자는 최대 30개까지만 사용할 수 있습니다.");
         }
     }
@@ -34,7 +35,7 @@ public class Calculator {
         if (number < 0) {
             throw new IllegalArgumentException("[ERROR] 숫자는 양수만 사용할 수 있습니다.");
         }
-        if (number >= MAX_NUMBER_LIMIT) {
+        if (number >= MAX_VALUE.getValue()) {
             throw new IllegalArgumentException("[ERROR] 각 숫자는 최대 9자리까지 가능합니다.");
         }
     }

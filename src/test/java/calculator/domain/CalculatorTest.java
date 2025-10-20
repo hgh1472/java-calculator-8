@@ -70,12 +70,12 @@ class CalculatorTest {
         }
 
         @Test
-        @DisplayName("각 숫자가 9자리(100,000,000) 이상인 값이 포함된 숫자들이 들어오면, IllegalArgumentException을 발생시킨다.")
+        @DisplayName("각 숫자가 9자리(100,000,000)를 초과하는 값이 포함된 숫자들이 들어오면, IllegalArgumentException을 발생시킨다.")
         void throwIllegalArgumentException_whenNumbersContainsTooLargeValue() {
             Calculator calculator = new Calculator();
             List<Long> numbers = new ArrayList<>();
             numbers.add(1L);
-            numbers.add(100000000L);
+            numbers.add(1_000_000_000L);
 
             assertThatThrownBy(() -> calculator.add(numbers))
                     .isInstanceOf(IllegalArgumentException.class)

@@ -1,5 +1,7 @@
 package calculator.interfaces;
 
+import static calculator.domain.NumberConstraints.MAX_NUMBER_LENGTH;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -7,8 +9,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Separator {
-
-    public static final int MAX_NUMBER_LENGTH = 9;
 
     public List<Long> separate(String input, Set<String> delimiters) {
         if (input == null || input.isEmpty()) {
@@ -38,7 +38,7 @@ public class Separator {
         if (isNotDecimal(str)) {
             throw new IllegalArgumentException("[ERROR] 허용되지 않는 문자가 포함되어 있습니다.");
         }
-        if (str.length() >= MAX_NUMBER_LENGTH) {
+        if (str.length() >= MAX_NUMBER_LENGTH.getValue()) {
             throw new IllegalArgumentException("[ERROR] 각 숫자는 최대 9자리까지 가능합니다.");
         }
     }
