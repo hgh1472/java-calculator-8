@@ -35,7 +35,7 @@ public class Separator {
     }
 
     private void validateNumberString(String str) {
-        if (isDecimal(str)) {
+        if (isNotDecimal(str)) {
             throw new IllegalArgumentException("[ERROR] 허용되지 않는 문자가 포함되어 있습니다.");
         }
         if (str.length() >= MAX_NUMBER_LENGTH) {
@@ -43,7 +43,7 @@ public class Separator {
         }
     }
 
-    private static boolean isDecimal(String str) {
+    private static boolean isNotDecimal(String str) {
         return !str.matches("-?\\d+");
     }
 }
